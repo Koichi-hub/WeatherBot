@@ -6,15 +6,15 @@ namespace WeatherBot.Handlers
     public class MessageHandler : IMessageHandler
     {
         private readonly IStartCommand startCommand;
-        private readonly ITodayCommand todayCommand;
+        private readonly IWeatherCommand weatherCommand;
 
         public MessageHandler(
             IStartCommand startCommand, 
-            ITodayCommand todayCommand
+            IWeatherCommand weatherCommand
         )
         {
             this.startCommand = startCommand;
-            this.todayCommand = todayCommand;
+            this.weatherCommand = weatherCommand;
         }
 
         public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ namespace WeatherBot.Handlers
             var command = messageText.Split(' ')[0] switch
             {
                 "/start"    => startCommand.ExecuteAsync(message, cancellationToken),
-                "/today"    => todayCommand.ExecuteAsync(message, cancellationToken),
+                "/weather"    => weatherCommand.ExecuteAsync(message, cancellationToken),
                 _           => Task.CompletedTask
             };
 

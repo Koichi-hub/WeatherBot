@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Core.Models;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System.Net.Http.Json;
 using WeatherBot.Helpers;

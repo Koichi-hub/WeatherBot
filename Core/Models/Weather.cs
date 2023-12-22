@@ -1,4 +1,4 @@
-﻿namespace WeatherBot.Models
+﻿namespace Core.Models
 {
     public sealed class Weather
     {

@@ -1,4 +1,4 @@
-﻿using WeatherBot.Models;
+﻿using Core.Models;
 
 namespace WeatherBot.Services
 {

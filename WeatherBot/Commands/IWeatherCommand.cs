@@ -2,7 +2,7 @@
 
 namespace WeatherBot.Commands
 {
-    public interface ITodayCommand
+    public interface IWeatherCommand
     {
         public Task ExecuteAsync(Message message, CancellationToken cancellationToken);
     }
