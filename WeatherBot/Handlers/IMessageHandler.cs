@@ -1,9 +1,10 @@
-﻿using Telegram.Bot.Types;
+﻿using Core.Entities;
+using Telegram.Bot.Types;
 
 namespace WeatherBot.Handlers
 {
     public interface IMessageHandler
     {
-        public Task ExecuteAsync(Message message, CancellationToken cancellationToken);
+        public Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken);
     }
 }

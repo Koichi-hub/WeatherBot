@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types;
+﻿using Core.Entities;
+using Telegram.Bot.Types;
 using WeatherBot.Commands;
 
 namespace WeatherBot.Handlers
@@ -17,7 +18,7 @@ namespace WeatherBot.Handlers
             this.weatherCommand = weatherCommand;
         }
 
-        public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
+        public async Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
         {
             if (message.Text is not { } messageText)
                 return;

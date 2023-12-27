@@ -1,4 +1,5 @@
 using DAL;
+using DAL.Repositories;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using WeatherBot;
@@ -28,6 +29,9 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         services.AddHttpClient<IWeatherService, OpenWeatherService>();
 
+        services.AddSingleton<ISessionRepository, SessionRepository>();
+
+        services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IWeatherService, OpenWeatherService>();
 
         services.AddSingleton<IStartCommand, StartCommand>();
