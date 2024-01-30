@@ -1,18 +1,17 @@
 using DAL;
 using DAL.Repositories;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using WeatherBot;
 using WeatherBot.Commands;
 using WeatherBot.Handlers;
 using WeatherBot.Services;
-using WeatherBot.Settings;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.Configure<AdminSettings>(context.Configuration.GetSection(AdminSettings.SectionName));
-        services.Configure<BotSettings>(context.Configuration.GetSection(BotSettings.SectionName));
+        services.Configure<AppSettings>(context.Configuration.GetSection(AppSettings.SectionName));
         services.Configure<OpenWeatherSettings>(context.Configuration.GetSection(OpenWeatherSettings.SectionName));
 
         services.AddDbContext<DatabaseContext>();
@@ -20,26 +19,26 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHttpClient("telegram_bot_client")
             .AddTypedClient<ITelegramBotClient>((httpClient, serviceProvider) =>
             {
-                var botSettings = serviceProvider.GetService<IOptions<BotSettings>>()?.Value 
-                    ?? throw new NullReferenceException(nameof(BotSettings));
+                var appSettings = serviceProvider.GetService<IOptions<AppSettings>>()?.Value 
+                    ?? throw new NullReferenceException(nameof(AppSettings));
 
-                var options = new TelegramBotClientOptions(botSettings.BotToken);
+                var options = new TelegramBotClientOptions(appSettings.BotToken);
                 return new TelegramBotClient(options, httpClient);
             });
 
         services.AddHttpClient<IWeatherService, OpenWeatherService>();
 
-        services.AddSingleton<ISessionRepository, SessionRepository>();
+        services.AddScoped<ISessionRepository, SessionRepository>();
 
-        services.AddSingleton<ISessionService, SessionService>();
-        services.AddSingleton<IWeatherService, OpenWeatherService>();
+        services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<IWeatherService, OpenWeatherService>();
 
-        services.AddSingleton<IStartCommand, StartCommand>();
-        services.AddSingleton<IWeatherCommand, WeatherCommand>();
+        services.AddScoped<IStartCommand, StartCommand>();
+        services.AddScoped<IWeatherCommand, WeatherCommand>();
 
-        services.AddSingleton<IMessageHandler, MessageHandler>();
+        services.AddScoped<IMessageHandler, MessageHandler>();
 
-        services.AddSingleton<UpdateHandler>();
+        services.AddScoped<UpdateHandler>();
         services.AddHostedService<PoolingWorker>();
     })
     .Build();

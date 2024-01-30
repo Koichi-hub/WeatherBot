@@ -478,3 +478,5 @@ $RECYCLE.BIN/
 
 # WeatherBot ignored files
 appsettings.Development.json
+/DAL/weatherbot.db
+/DAL/weatherbot.db-journal

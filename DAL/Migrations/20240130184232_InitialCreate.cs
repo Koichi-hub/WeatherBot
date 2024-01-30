@@ -13,8 +13,7 @@ namespace DAL.Migrations
                 name: "Sessions",
                 columns: table => new
                 {
-                    UserId = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<long>(type: "INTEGER", nullable: false),
                     City = table.Column<string>(type: "TEXT", nullable: true),
                     WeatherRequestCount = table.Column<int>(type: "INTEGER", nullable: false),
                     WeatherTariff = table.Column<int>(type: "INTEGER", nullable: false),
@@ -31,7 +30,8 @@ namespace DAL.Migrations
                 name: "Tickets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: false),
                     SessionId = table.Column<long>(type: "INTEGER", nullable: true),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -41,7 +41,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => new { x.Id, x.Value });
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Tickets_Sessions_SessionId",
                         column: x => x.SessionId,
@@ -53,6 +53,11 @@ namespace DAL.Migrations
                 name: "IX_Tickets_SessionId",
                 table: "Tickets",
                 column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_Value",
+                table: "Tickets",
+                column: "Value");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

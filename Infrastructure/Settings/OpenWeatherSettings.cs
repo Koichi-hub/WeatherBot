@@ -1,4 +1,4 @@
-﻿namespace WeatherBot.Settings
+﻿namespace Infrastructure.Settings
 {
     public class OpenWeatherSettings
     {

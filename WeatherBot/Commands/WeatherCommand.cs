@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Infrastructure.Settings;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Services;
-using WeatherBot.Settings;
 
 namespace WeatherBot.Commands
 {
@@ -10,22 +10,22 @@ namespace WeatherBot.Commands
     {
         private readonly ITelegramBotClient botClient;
         private readonly IWeatherService weatherService;
-        private readonly AdminSettings adminSettings;
+        private readonly AppSettings appSettings;
 
         public WeatherCommand(
             ITelegramBotClient botClient, 
             IWeatherService weatherService,
-            IOptions<AdminSettings> adminSettings
+            IOptions<AppSettings> appSettings
         )
         {
             this.botClient = botClient;
             this.weatherService = weatherService;
-            this.adminSettings = adminSettings.Value;
+            this.appSettings = appSettings.Value;
         }
 
         public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
         {
-            if (message.From?.Id == adminSettings.Id)
+            if (message.From?.Id == appSettings.AdminId)
             {
 
             }

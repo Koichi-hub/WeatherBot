@@ -9,7 +9,8 @@ namespace DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<Ticket> builder)
         {
-            builder.HasKey(t => new { t.Id, t.Value });
+            builder.HasKey(t => t.Id);
+            builder.HasIndex(t => t.Value);
             builder
                 .Property(t => t.WeatherTariff)
                 .HasConversion(

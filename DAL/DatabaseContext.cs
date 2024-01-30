@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
 using DAL.Configurations;
+using Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace DAL;
 
@@ -9,8 +11,15 @@ public class DatabaseContext : DbContext
     public DbSet<Session> Sessions { get; set; } = null!;
     public DbSet<Ticket> Tickets { get; set; } = null!;
 
+    private readonly AppSettings appSettings;
+
+    public DatabaseContext(IOptions<AppSettings> appSettings)
+    {
+        this.appSettings = appSettings.Value;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder options) =>
-        options.UseSqlite($"Data Source=./weatherbot.db");
+        options.UseSqlite(appSettings.ConnectionString);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

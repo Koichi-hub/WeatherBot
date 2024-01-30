@@ -11,6 +11,9 @@ namespace DAL.Configurations
         {
             builder.HasKey(s => s.UserId);
             builder
+                .Property(s => s.UserId)
+                .ValueGeneratedNever();
+            builder
                 .Property(s => s.WeatherTariff)
                 .HasConversion(
                     v => (int)v,

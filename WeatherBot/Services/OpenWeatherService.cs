@@ -1,10 +1,10 @@
 ﻿using Core.Models;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System.Net.Http.Json;
 using WeatherBot.Helpers;
 using WeatherBot.Models;
-using WeatherBot.Settings;
 
 namespace WeatherBot.Services
 {

@@ -8,13 +8,17 @@ public class PoolingWorker : BackgroundService
 {
     private readonly ILogger<PoolingWorker> logger;
     private readonly ITelegramBotClient botClient;
-    private readonly UpdateHandler updateHandler;
+    private readonly IServiceProvider serviceProvider;
 
-    public PoolingWorker(ILogger<PoolingWorker> logger, ITelegramBotClient botClient, UpdateHandler updateHandler)
+    public PoolingWorker(
+        ILogger<PoolingWorker> logger, 
+        ITelegramBotClient botClient,
+        IServiceProvider serviceProvider
+    )
     {
         this.logger = logger;
         this.botClient = botClient;
-        this.updateHandler = updateHandler;
+        this.serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -28,6 +32,9 @@ public class PoolingWorker : BackgroundService
         {
             try
             {
+                using var scope = serviceProvider.CreateScope();
+                var updateHandler = scope.ServiceProvider.GetService<IUpdateHandler>();
+
                 var receiverOptions = new ReceiverOptions()
                 {
                     AllowedUpdates = Array.Empty<UpdateType>(),
@@ -38,7 +45,7 @@ public class PoolingWorker : BackgroundService
                 logger.LogInformation("Start receiving updates for {BotName}", me.Username ?? "My comrade");
 
                 await botClient.ReceiveAsync(
-                    updateHandler: updateHandler,
+                    updateHandler: updateHandler!,
                     receiverOptions: receiverOptions,
                     cancellationToken: cancellationToken
                 );
