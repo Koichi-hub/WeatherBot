@@ -6,8 +6,6 @@
 
         public string BotToken { get; set; } = null!;
 
-        public long AdminId { get; set; }
-
         public string ConnectionString { get; set; } = null!;
     }
 }

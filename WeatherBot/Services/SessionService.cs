@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Constants;
+using Core.Entities;
 using Core.Enums;
 using DAL.Repositories;
 
@@ -28,7 +29,8 @@ namespace WeatherBot.Services
             var session = new Session
             {
                 UserId = userId,
-                WeatherTariff = WeatherTariff.Guest
+                WeatherTariff = WeatherTariff.Guest,
+                WeatherRequestCount = WeatherTariffValues.Limits[WeatherTariff.Guest]
             };
 
             return await sessionRepository.CreateAsync(session);

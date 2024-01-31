@@ -38,9 +38,11 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddScoped<IStartCommand, StartCommand>();
         services.AddScoped<IWeatherCommand, WeatherCommand>();
         services.AddScoped<ISetCityCommand, SetCityCommand>();
+        services.AddScoped<IBalanceCommand, BalanceCommand>();
         services.AddScoped<ICommandListCommand, CommandListCommand>();
         services.AddScoped<ITariffsCommand, TariffsCommand>();
         services.AddScoped<ITicketCommand, TicketCommand>();
+        services.AddScoped<IContributingCommand, ContributingCommand>();
 
         services.AddScoped<IMessageHandler, MessageHandler>();
 

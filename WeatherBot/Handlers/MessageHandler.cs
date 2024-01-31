@@ -12,6 +12,8 @@ namespace WeatherBot.Handlers
         private readonly ICommandListCommand commandListCommand;
         private readonly ITariffsCommand tariffsCommand;
         private readonly ITicketCommand ticketCommand;
+        private readonly IBalanceCommand balanceCommand;
+        private readonly IContributingCommand contributingCommand;
 
         public MessageHandler(
             IStartCommand startCommand, 
@@ -19,7 +21,9 @@ namespace WeatherBot.Handlers
             ISetCityCommand setCityCommand,
             ICommandListCommand commandListCommand,
             ITariffsCommand tariffsCommand,
-            ITicketCommand ticketCommand
+            ITicketCommand ticketCommand,
+            IBalanceCommand balanceCommand,
+            IContributingCommand contributingCommand
         )
         {
             this.startCommand = startCommand;
@@ -28,6 +32,8 @@ namespace WeatherBot.Handlers
             this.commandListCommand = commandListCommand;
             this.tariffsCommand = tariffsCommand;
             this.ticketCommand = ticketCommand;
+            this.balanceCommand = balanceCommand;
+            this.contributingCommand = contributingCommand;
         }
 
         public Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
@@ -41,9 +47,9 @@ namespace WeatherBot.Handlers
                 Core.Constants.Commands.Ticket => ticketCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.Weather => weatherCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.Setcity => setCityCommand.ExecuteAsync(session, message, cancellationToken),
-                Core.Constants.Commands.Balance => Task.CompletedTask,
+                Core.Constants.Commands.Balance => balanceCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.Tariffs => tariffsCommand.ExecuteAsync(message, cancellationToken),
-                Core.Constants.Commands.Contributing => Task.CompletedTask,
+                Core.Constants.Commands.Contributing => contributingCommand.ExecuteAsync(message, cancellationToken),
                 Core.Constants.Commands.CommandList => commandListCommand.ExecuteAsync(message, cancellationToken),
                 _ => HandleWaitResponseCommand(session, message, cancellationToken)
             };
