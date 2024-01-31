@@ -1,4 +1,5 @@
-﻿using Infrastructure.Settings;
+﻿using Core.Entities;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -23,14 +24,24 @@ namespace WeatherBot.Commands
             this.appSettings = appSettings.Value;
         }
 
-        public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
+        public async Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
         {
             if (message.From?.Id == appSettings.AdminId)
             {
 
             }
 
-            var weather = await weatherService.GetWeather("perm");
+            if (session.City == null)
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: message.Chat.Id,
+                    text: "Установите город",
+                    cancellationToken: cancellationToken
+                );
+                return;
+            }
+
+            var weather = await weatherService.GetWeather(session.City);
 
             var text = $"В городе {weather.City} ({weather.Country}) {weather.Status}.\nТемпература от {weather.Temperature.Min}°C до {weather.Temperature.Max}°C, ощущается как {weather.Temperature.FeelsLike}°C";
 

@@ -33,7 +33,7 @@ public class PoolingWorker : BackgroundService
             try
             {
                 using var scope = serviceProvider.CreateScope();
-                var updateHandler = scope.ServiceProvider.GetService<IUpdateHandler>();
+                var updateHandler = scope.ServiceProvider.GetService<UpdateHandler>();
 
                 var receiverOptions = new ReceiverOptions()
                 {

@@ -33,5 +33,10 @@ namespace WeatherBot.Services
 
             return await sessionRepository.CreateAsync(session);
         }
+
+        public Task<Session> UpdateAsync(Session session)
+        {
+            return sessionRepository.UpdateAsync(session);
+        }
     }
 }

@@ -5,5 +5,7 @@ namespace WeatherBot.Services
     public interface ISessionService
     {
         Task<Session> GetAsync(long userId);
+
+        Task<Session> UpdateAsync(Session session);
     }
 }

@@ -7,5 +7,7 @@ namespace DAL.Repositories
         Task<Session?> GetAsync(long userId);
 
         Task<Session> CreateAsync(Session model);
+
+        Task<Session> UpdateAsync(Session session);
     }
 }

@@ -13,5 +13,7 @@ namespace Core.Entities
         public WeatherTariff WeatherTariff { get; set; }
 
         public bool IsBanned { get; set; }
+
+        public string? WaitResponseCommand { get; set; }
     }
 }

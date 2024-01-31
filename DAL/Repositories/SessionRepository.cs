@@ -24,5 +24,12 @@ namespace DAL.Repositories
         {
             return await databaseContext.Sessions.FirstOrDefaultAsync(s => s.UserId == userId);
         }
+
+        public async Task<Session> UpdateAsync(Session session)
+        {
+            databaseContext.Sessions.Update(session);
+            await databaseContext.SaveChangesAsync();
+            return session;
+        }
     }
 }
