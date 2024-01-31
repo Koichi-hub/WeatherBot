@@ -12,7 +12,7 @@ namespace Core.Entities
 
         public Session? Session { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActivated { get; set; }
 
         public WeatherTariff WeatherTariff { get; set; }
     }

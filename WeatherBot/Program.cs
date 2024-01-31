@@ -29,14 +29,18 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHttpClient<IWeatherService, OpenWeatherService>();
 
         services.AddScoped<ISessionRepository, SessionRepository>();
+        services.AddScoped<ITicketRepository, TicketRepository>();
 
         services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<ITicketService, TicketService>();
         services.AddScoped<IWeatherService, OpenWeatherService>();
 
         services.AddScoped<IStartCommand, StartCommand>();
         services.AddScoped<IWeatherCommand, WeatherCommand>();
         services.AddScoped<ISetCityCommand, SetCityCommand>();
         services.AddScoped<ICommandListCommand, CommandListCommand>();
+        services.AddScoped<ITariffsCommand, TariffsCommand>();
+        services.AddScoped<ITicketCommand, TicketCommand>();
 
         services.AddScoped<IMessageHandler, MessageHandler>();
 

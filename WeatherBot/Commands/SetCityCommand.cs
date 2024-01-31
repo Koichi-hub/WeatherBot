@@ -33,6 +33,7 @@ namespace WeatherBot.Commands
 
         public async Task HandleResponse(Session session, Message message, CancellationToken cancellationToken)
         {
+            session.WaitResponseCommand = string.Empty;
             session.City = message.Text;
             await sessionService.UpdateAsync(session);
 

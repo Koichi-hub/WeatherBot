@@ -10,18 +10,24 @@ namespace WeatherBot.Handlers
         private readonly IWeatherCommand weatherCommand;
         private readonly ISetCityCommand setCityCommand;
         private readonly ICommandListCommand commandListCommand;
+        private readonly ITariffsCommand tariffsCommand;
+        private readonly ITicketCommand ticketCommand;
 
         public MessageHandler(
             IStartCommand startCommand, 
             IWeatherCommand weatherCommand,
             ISetCityCommand setCityCommand,
-            ICommandListCommand commandListCommand
+            ICommandListCommand commandListCommand,
+            ITariffsCommand tariffsCommand,
+            ITicketCommand ticketCommand
         )
         {
             this.startCommand = startCommand;
             this.weatherCommand = weatherCommand;
             this.setCityCommand = setCityCommand;
             this.commandListCommand = commandListCommand;
+            this.tariffsCommand = tariffsCommand;
+            this.ticketCommand = ticketCommand;
         }
 
         public Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
@@ -32,10 +38,11 @@ namespace WeatherBot.Handlers
             return messageText.Split(' ')[0] switch
             {
                 Core.Constants.Commands.Start => startCommand.ExecuteAsync(message, cancellationToken),
+                Core.Constants.Commands.Ticket => ticketCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.Weather => weatherCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.Setcity => setCityCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.Balance => Task.CompletedTask,
-                Core.Constants.Commands.Tariffs => Task.CompletedTask,
+                Core.Constants.Commands.Tariffs => tariffsCommand.ExecuteAsync(message, cancellationToken),
                 Core.Constants.Commands.Contributing => Task.CompletedTask,
                 Core.Constants.Commands.CommandList => commandListCommand.ExecuteAsync(message, cancellationToken),
                 _ => HandleWaitResponseCommand(session, message, cancellationToken)
@@ -50,6 +57,7 @@ namespace WeatherBot.Handlers
             return session.WaitResponseCommand switch
             {
                 Core.Constants.Commands.Setcity => setCityCommand.HandleResponse(session, message, cancellationToken),
+                Core.Constants.Commands.Ticket => ticketCommand.HandleResponse(session, message, cancellationToken),
                 _ => commandListCommand.ExecuteAsync(message, cancellationToken)
             };
         }

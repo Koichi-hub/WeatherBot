@@ -2,9 +2,9 @@
 {
     public enum WeatherTariff
     {
-        None = 0,
-        Guest = 1,
-        User = 2,
-        Unlimited = 3,
+        Guest = 0,
+        Client = 100,
+        Vip = 200,
+        Admin = 1000
     }
 }

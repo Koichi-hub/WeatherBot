@@ -1,8 +1,10 @@
 ﻿using Core.Entities;
+using Core.Enums;
 using DAL.Configurations;
 using Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Infrastructure.Helpers;
 
 namespace DAL;
 
@@ -25,6 +27,15 @@ public class DatabaseContext : DbContext
     {
         new SessionConfiguration().Configure(modelBuilder.Entity<Session>());
         new TicketConfiguration().Configure(modelBuilder.Entity<Ticket>());
+
+        modelBuilder.Entity<Ticket>().HasData(new Ticket
+        {
+            Id = 1,
+            WeatherTariff = WeatherTariff.Admin,
+            Value = TicketHelper.GenerateValue(),
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        });
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

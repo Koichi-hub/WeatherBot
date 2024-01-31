@@ -28,7 +28,7 @@ namespace WeatherBot.Services
             var session = new Session
             {
                 UserId = userId,
-                WeatherTariff = WeatherTariff.None
+                WeatherTariff = WeatherTariff.Guest
             };
 
             return await sessionRepository.CreateAsync(session);

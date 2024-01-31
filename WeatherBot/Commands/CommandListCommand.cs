@@ -18,6 +18,7 @@ namespace WeatherBot.Commands
             var sb = new StringBuilder();
             sb.Append("Список команд:\n");
             sb.Append($"{Core.Constants.Commands.Start}\n");
+            sb.Append($"{Core.Constants.Commands.Ticket} - использовать билет для активации тарифа\n");
             sb.Append($"{Core.Constants.Commands.Weather} - прогноз погоды на сегодня\n");
             sb.Append($"{Core.Constants.Commands.Setcity} - задать город\n");
             sb.Append($"{Core.Constants.Commands.Balance} - доступное кол-во запросов\n");
