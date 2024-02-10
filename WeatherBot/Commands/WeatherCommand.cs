@@ -24,7 +24,7 @@ namespace WeatherBot.Commands
 
         public async Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
         {
-            if (session.WeatherRequestCount <= 0 && session.WeatherTariff != Core.Enums.WeatherTariff.Admin)
+            if (session.WeatherRequestCount <= 0)
             {
                 await botClient.SendTextMessageAsync(
                     chatId: message.Chat.Id,
@@ -44,6 +44,19 @@ namespace WeatherBot.Commands
                 return;
             }
 
+            if (
+                session.WeatherTariff == Core.Enums.WeatherTariff.Guest &&
+                !await sessionService.CanGuestGetWeather(session)
+            )
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: message.Chat.Id,
+                    text: "На сегодня кол-во гостей достигло максимума.\nПопробуйте завтра",
+                    cancellationToken: cancellationToken
+                );
+                return;
+            }
+
             try
             {
                 var weather = await weatherService.GetWeather(session.City);
@@ -56,11 +69,9 @@ namespace WeatherBot.Commands
                     cancellationToken: cancellationToken
                 );
 
-                if (session.WeatherTariff != Core.Enums.WeatherTariff.Admin)
-                {
-                    session.WeatherRequestCount--;
-                    await sessionService.UpdateAsync(session);
-                }
+                session.WeatherRequestCount--;
+                session.DateLastWeatherRequest = DateTime.UtcNow;
+                await sessionService.UpdateAsync(session);
             }
             catch
             {

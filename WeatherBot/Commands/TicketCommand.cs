@@ -65,16 +65,6 @@ namespace WeatherBot.Commands
                 return;
             }
 
-            if (session.WeatherTariff == Core.Enums.WeatherTariff.Admin)
-            {
-                await botClient.SendTextMessageAsync(
-                    chatId: message.Chat.Id,
-                    text: "Теперь вы админ :)",
-                    cancellationToken: cancellationToken
-                );
-                return;
-            }
-
             await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,
                 text: $"Вы активировали билет!\nВаш тариф теперь - {session.WeatherTariff}, и вам доступно {WeatherTariffValues.Limits[session.WeatherTariff]} запросов",

@@ -40,5 +40,10 @@ namespace WeatherBot.Services
         {
             return sessionRepository.UpdateAsync(session);
         }
+
+        public Task<bool> CanGuestGetWeather(Session session)
+        {
+            return sessionRepository.CanGuestGetWeather(session);
+        }
     }
 }

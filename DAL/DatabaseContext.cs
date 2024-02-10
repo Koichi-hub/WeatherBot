@@ -27,15 +27,6 @@ public class DatabaseContext : DbContext
     {
         new SessionConfiguration().Configure(modelBuilder.Entity<Session>());
         new TicketConfiguration().Configure(modelBuilder.Entity<Ticket>());
-
-        modelBuilder.Entity<Ticket>().HasData(new Ticket
-        {
-            Id = 1,
-            WeatherTariff = WeatherTariff.Admin,
-            Value = TicketHelper.GenerateValue(),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        });
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

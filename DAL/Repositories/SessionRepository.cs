@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Constants;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
@@ -6,6 +7,7 @@ namespace DAL.Repositories
     public class SessionRepository : ISessionRepository
     {
         private readonly DatabaseContext databaseContext;
+        private IQueryable<Session> AvailableSessions => databaseContext.Sessions.Where(x => !x.IsBanned && !x.IsDeleted);
 
         public SessionRepository(DatabaseContext databaseContext)
         {
@@ -30,6 +32,18 @@ namespace DAL.Repositories
             databaseContext.Sessions.Update(session);
             await databaseContext.SaveChangesAsync();
             return session;
+        }
+
+        public async Task<bool> CanGuestGetWeather(Session session)
+        {
+            var availableSessionsTodayPool = AvailableSessions.Where(x => x.DateLastWeatherRequest.Day == DateTime.UtcNow.Day);
+
+            var count = await availableSessionsTodayPool.CountAsync(x => x.WeatherTariff == Core.Enums.WeatherTariff.Guest);
+
+            if (count < WeatherTariffValues.TotalGuests)
+                return true;
+
+            return await availableSessionsTodayPool.AnyAsync(x => x.UserId == session.UserId);
         }
     }
 }

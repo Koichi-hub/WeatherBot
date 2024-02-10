@@ -10,9 +10,13 @@ namespace Core.Entities
 
         public int WeatherRequestCount { get; set; }
 
+        public DateTime DateLastWeatherRequest { get; set; }
+
         public WeatherTariff WeatherTariff { get; set; }
 
         public bool IsBanned { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public string? WaitResponseCommand { get; set; }
     }

@@ -1,11 +1,14 @@
 ﻿using Core.Entities;
+using Core.Enums;
 
 namespace WeatherBot.Services
 {
     public interface ITicketService
     {
+        Task<Ticket?> GetByValueAsyncOrDefault(string value);
+
         Task ActivateForSessionAsync(Ticket ticket, Session session);
 
-        Task<Ticket?> GetByValueAsyncOrDefault(string value);
+        Task<Ticket?> IssueTicket(WeatherTariff weatherTariff);
     }
 }

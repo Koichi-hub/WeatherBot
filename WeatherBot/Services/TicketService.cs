@@ -1,6 +1,5 @@
-﻿using Core.Constants;
-using Core.Entities;
-using DAL;
+﻿using Core.Entities;
+using Core.Enums;
 using DAL.Repositories;
 
 namespace WeatherBot.Services
@@ -8,15 +7,10 @@ namespace WeatherBot.Services
     public class TicketService : ITicketService
     {
         private readonly ITicketRepository ticketRepository;
-        private readonly DatabaseContext databaseContext;
 
-        public TicketService(
-            ITicketRepository ticketRepository,
-            DatabaseContext databaseContext
-        )
+        public TicketService(ITicketRepository ticketRepository)
         {
             this.ticketRepository = ticketRepository;
-            this.databaseContext = databaseContext;
         }
 
         public Task<Ticket?> GetByValueAsyncOrDefault(string value)
@@ -24,21 +18,14 @@ namespace WeatherBot.Services
             return ticketRepository.GetByValueAsyncOrDefault(value);
         }
 
-        public async Task ActivateForSessionAsync(Ticket ticket, Session session)
+        public Task ActivateForSessionAsync(Ticket ticket, Session session)
         {
-            using var transaction = databaseContext.Database.BeginTransaction();
+            return ticketRepository.ActivateForSessionAsync(ticket, session);
+        }
 
-            ticket.IsActivated = true;
-            ticket.Session = session;
-            session.WeatherTariff = ticket.WeatherTariff;
-            if (ticket.WeatherTariff != Core.Enums.WeatherTariff.Admin)
-                session.WeatherRequestCount = WeatherTariffValues.Limits[ticket.WeatherTariff];
-
-            databaseContext.Sessions.Update(session);
-            databaseContext.Tickets.Update(ticket);
-            await databaseContext.SaveChangesAsync();
-
-            transaction.Commit();
+        public Task<Ticket?> IssueTicket(WeatherTariff weatherTariff)
+        {
+            return ticketRepository.IssueTicket(weatherTariff);
         }
     }
 }

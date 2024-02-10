@@ -9,5 +9,7 @@ namespace DAL.Repositories
         Task<Session> CreateAsync(Session model);
 
         Task<Session> UpdateAsync(Session session);
+
+        Task<bool> CanGuestGetWeather(Session session);
     }
 }
