@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Constants;
+using Core.Entities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Services;
@@ -24,6 +25,8 @@ namespace WeatherBot.Commands
 
         public async Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
         {
+            await sessionService.RefreshBalance(session);
+
             if (session.WeatherRequestCount <= 0)
             {
                 await botClient.SendTextMessageAsync(

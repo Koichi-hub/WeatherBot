@@ -45,5 +45,16 @@ namespace WeatherBot.Services
         {
             return sessionRepository.CanGuestGetWeather(session);
         }
+
+        public Task RefreshBalance(Session session)
+        {
+            if (session.DateLastWeatherRequest.Day < DateTime.UtcNow.Day)
+            {
+                session.WeatherRequestCount = WeatherTariffValues.Limits[session.WeatherTariff];
+                session.DateLastWeatherRequest = DateTime.UtcNow;
+                return sessionRepository.UpdateAsync(session);
+            }
+            return Task.CompletedTask;
+        }
     }
 }

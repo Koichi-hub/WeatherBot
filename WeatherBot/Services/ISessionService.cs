@@ -9,5 +9,7 @@ namespace WeatherBot.Services
         Task<Session> UpdateAsync(Session session);
 
         Task<bool> CanGuestGetWeather(Session session);
+
+        Task RefreshBalance(Session session);
     }
 }
