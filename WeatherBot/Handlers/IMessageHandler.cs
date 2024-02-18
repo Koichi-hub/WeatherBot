@@ -5,6 +5,6 @@ namespace WeatherBot.Handlers
 {
     public interface IMessageHandler
     {
-        public Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken);
+        Task ExecuteAsync(Message message, CancellationToken cancellationToken);
     }
 }

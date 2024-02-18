@@ -10,7 +10,7 @@ namespace Core.Constants
 
         public static readonly List<WeatherTariff> AvailableWeatherTariffs = new()
         {
-            WeatherTariff.Guest, WeatherTariff.Client, WeatherTariff.Vip
+            WeatherTariff.Client, WeatherTariff.Vip
         };
 
         public static readonly Dictionary<WeatherTariff, int> Limits = new()

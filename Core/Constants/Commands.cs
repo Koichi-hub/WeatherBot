@@ -10,5 +10,11 @@
         public const string Tariffs = "/tariffs";
         public const string Contributing = "/contributing";
         public const string CommandList = "/commands";
+
+        //admin
+        public const string TicketNew = "/ticket_new";
+        public const string TicketRemove = "/ticket_remove";
+        public const string TicketsActive = "/tickets_active";
+        public const string TicketsActivated = "/tickets_activated";
     }
 }

@@ -1,10 +1,8 @@
 ﻿using Core.Entities;
-using Core.Enums;
 using DAL.Configurations;
 using Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Infrastructure.Helpers;
 
 namespace DAL;
 

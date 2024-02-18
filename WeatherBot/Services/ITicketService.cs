@@ -9,6 +9,8 @@ namespace WeatherBot.Services
 
         Task ActivateForSessionAsync(Ticket ticket, Session session);
 
-        Task<Ticket?> IssueTicket(WeatherTariff weatherTariff);
+        Task<Ticket> IssueTicket(WeatherTariff weatherTariff);
+
+        Task<bool> CanIssueTicket(WeatherTariff weatherTariff);
     }
 }

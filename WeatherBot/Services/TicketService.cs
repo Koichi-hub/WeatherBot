@@ -23,9 +23,14 @@ namespace WeatherBot.Services
             return ticketRepository.ActivateForSessionAsync(ticket, session);
         }
 
-        public Task<Ticket?> IssueTicket(WeatherTariff weatherTariff)
+        public Task<Ticket> IssueTicket(WeatherTariff weatherTariff)
         {
             return ticketRepository.IssueTicket(weatherTariff);
+        }
+
+        public Task<bool> CanIssueTicket(WeatherTariff weatherTariff)
+        {
+            return ticketRepository.CanIssueTicket(weatherTariff);
         }
     }
 }

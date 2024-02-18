@@ -24,16 +24,17 @@ namespace WeatherBot.Services
             return session;
         }
 
-        private async Task<Session> CreateSessionAsync(long userId)
+        private Task<Session> CreateSessionAsync(long userId)
         {
             var session = new Session
             {
                 UserId = userId,
                 WeatherTariff = WeatherTariff.Guest,
-                WeatherRequestCount = WeatherTariffValues.Limits[WeatherTariff.Guest]
+                WeatherRequestCount = WeatherTariffValues.Limits[WeatherTariff.Guest],
+                DateLastWeatherRequest = DateTime.UtcNow.AddDays(-1)
             };
 
-            return await sessionRepository.CreateAsync(session);
+            return sessionRepository.CreateAsync(session);
         }
 
         public Task<Session> UpdateAsync(Session session)

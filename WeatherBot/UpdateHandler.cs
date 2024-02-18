@@ -11,30 +11,29 @@ public class UpdateHandler : IUpdateHandler
 {
     private readonly ILogger<UpdateHandler> logger;
     private readonly IMessageHandler messageHandler;
+    private readonly ICallbackQueryHandler callbackQueryHandler;
     private readonly ISessionService sessionService;
 
     public UpdateHandler(
         ILogger<UpdateHandler> logger,
         IMessageHandler messageHandler,
+        ICallbackQueryHandler callbackQueryHandler,
         ISessionService sessionService
     )
     {
         this.logger = logger;
         this.messageHandler = messageHandler;
+        this.callbackQueryHandler = callbackQueryHandler;
         this.sessionService = sessionService;
     }
 
     public async Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
     {
-        if (update.Message?.From?.Id == null)
-            return;
-
-        var session = await sessionService.GetAsync(update.Message.From.Id);
-
         var handler = update switch
         {
-            { Message: { } message } => messageHandler.ExecuteAsync(session, message, cancellationToken),
-            _                        => Task.CompletedTask
+            { Message: { } message } => messageHandler.ExecuteAsync(message, cancellationToken),
+            { CallbackQuery: { } callbackQuery } => callbackQueryHandler.ExecuteAsync(callbackQuery, cancellationToken),
+            _ => Task.CompletedTask
         };
 
         await handler;

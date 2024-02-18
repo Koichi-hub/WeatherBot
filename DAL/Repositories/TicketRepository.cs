@@ -9,8 +9,7 @@ namespace DAL.Repositories
     public class TicketRepository : ITicketRepository
     {
         private readonly DatabaseContext databaseContext;
-        private IQueryable<Ticket> AvailableTickets => databaseContext.Tickets.Where(t => t.IsActivated == false);
-        private IQueryable<Session> AvailableSessions => databaseContext.Sessions.Where(x => !x.IsBanned && !x.IsDeleted);
+        private IQueryable<Ticket> AvailableTickets => databaseContext.Tickets.Where(t => !t.IsActivated);
 
         public TicketRepository(DatabaseContext databaseContext)
         {
@@ -38,11 +37,8 @@ namespace DAL.Repositories
             transaction.Commit();
         }
 
-        public async Task<Ticket?> IssueTicket(WeatherTariff weatherTariff)
+        public async Task<Ticket> IssueTicket(WeatherTariff weatherTariff)
         {
-            if (!await CanIssueTicket(weatherTariff))
-                return null;
-
             var ticket = new Ticket
             {
                 WeatherTariff = weatherTariff,
@@ -55,7 +51,7 @@ namespace DAL.Repositories
             return ticket;
         }
 
-        private Task<bool> CanIssueTicket(WeatherTariff weatherTariff)
+        public Task<bool> CanIssueTicket(WeatherTariff weatherTariff)
         {
             return weatherTariff switch
             {
@@ -67,13 +63,13 @@ namespace DAL.Repositories
 
         private async Task<bool> CanIssueTicketForClient()
         {
-            var count = await AvailableSessions.CountAsync(x => x.WeatherTariff == WeatherTariff.Client);
+            var count = await AvailableTickets.CountAsync(x => x.WeatherTariff == WeatherTariff.Client);
             return count < WeatherTariffValues.TotalClients;
         }
 
         private async Task<bool> CanIssueTicketForVip()
         {
-            var count = await AvailableSessions.CountAsync(x => x.WeatherTariff == WeatherTariff.Vip);
+            var count = await AvailableTickets.CountAsync(x => x.WeatherTariff == WeatherTariff.Vip);
             return count < WeatherTariffValues.TotalVips;
         }
     }

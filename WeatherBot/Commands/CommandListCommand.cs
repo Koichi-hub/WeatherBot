@@ -16,14 +16,20 @@ namespace WeatherBot.Commands
         public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
         {
             var sb = new StringBuilder();
-            sb.Append("Список команд:\n");
-            sb.Append($"{Core.Constants.Commands.Start}\n");
-            sb.Append($"{Core.Constants.Commands.Ticket} - использовать билет для активации тарифа\n");
-            sb.Append($"{Core.Constants.Commands.Weather} - прогноз погоды на сегодня\n");
-            sb.Append($"{Core.Constants.Commands.Setcity} - задать город\n");
-            sb.Append($"{Core.Constants.Commands.Balance} - доступное кол-во запросов\n");
-            sb.Append($"{Core.Constants.Commands.Tariffs} - тарифы\n");
-            sb.Append($"{Core.Constants.Commands.Contributing} - внести вклад в проект");
+            sb.AppendLine("Список команд:");
+            sb.AppendLine($"{Core.Constants.Commands.Start}");
+            sb.AppendLine($"{Core.Constants.Commands.Ticket} - использовать билет для активации тарифа");
+            sb.AppendLine($"{Core.Constants.Commands.Weather} - прогноз погоды на сегодня");
+            sb.AppendLine($"{Core.Constants.Commands.Setcity} - задать город");
+            sb.AppendLine($"{Core.Constants.Commands.Balance} - доступное кол-во запросов");
+            sb.AppendLine($"{Core.Constants.Commands.Tariffs} - тарифы");
+            sb.AppendLine($"{Core.Constants.Commands.Contributing} - внести вклад в проект");
+
+            //admin
+            sb.AppendLine($"{Core.Constants.Commands.TicketNew} - выпустить билет");
+            sb.AppendLine($"{Core.Constants.Commands.TicketRemove} - удалить билет");
+            sb.AppendLine($"{Core.Constants.Commands.TicketsActive} - список активных билетов");
+            sb.AppendLine($"{Core.Constants.Commands.TicketsActivated} - список использованных билетов");
 
             await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,

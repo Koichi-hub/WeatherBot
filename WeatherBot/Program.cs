@@ -44,7 +44,10 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddScoped<ITicketCommand, TicketCommand>();
         services.AddScoped<IContributingCommand, ContributingCommand>();
 
+        services.AddScoped<ITicketNewCommand, TicketNewCommand>();
+
         services.AddScoped<IMessageHandler, MessageHandler>();
+        services.AddScoped<ICallbackQueryHandler, CallbackQueryHandler>();
 
         services.AddScoped<UpdateHandler>();
         services.AddHostedService<PoolingWorker>();

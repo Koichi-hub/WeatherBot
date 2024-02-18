@@ -18,6 +18,8 @@ namespace Core.Entities
 
         public bool IsDeleted { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public string? WaitResponseCommand { get; set; }
     }
 }
