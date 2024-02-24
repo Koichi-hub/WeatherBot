@@ -33,6 +33,11 @@ namespace WeatherBot.Services
             return ticketRepository.CanIssueTicket(weatherTariff);
         }
 
+        public Task RemoveTicket(string value)
+        {
+            return ticketRepository.RemoveTicket(value);
+        }
+
         public Task<Ticket[]> GetActiveTickets()
         {
             return ticketRepository.GetActiveTickets();

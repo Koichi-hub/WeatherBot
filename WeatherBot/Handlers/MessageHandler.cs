@@ -20,6 +20,7 @@ namespace WeatherBot.Handlers
         private readonly ITicketNewCommand ticketNewCommand;
         private readonly ITicketsActiveCommand ticketsActiveCommand;
         private readonly ITicketsActivatedCommand ticketsActivatedCommand;
+        private readonly ITicketRemoveCommand ticketRemoveCommand;
 
         public MessageHandler(
             ISessionService sessionService,
@@ -33,7 +34,8 @@ namespace WeatherBot.Handlers
             IContributingCommand contributingCommand,
             ITicketNewCommand ticketNewCommand,
             ITicketsActiveCommand ticketsActiveCommand,
-            ITicketsActivatedCommand ticketsActivatedCommand
+            ITicketsActivatedCommand ticketsActivatedCommand,
+            ITicketRemoveCommand ticketRemoveCommand
         )
         {
             this.sessionService = sessionService;
@@ -49,6 +51,7 @@ namespace WeatherBot.Handlers
             this.ticketNewCommand = ticketNewCommand;
             this.ticketsActiveCommand = ticketsActiveCommand;
             this.ticketsActivatedCommand = ticketsActivatedCommand;
+            this.ticketRemoveCommand = ticketRemoveCommand;
         }
 
         public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
@@ -69,7 +72,7 @@ namespace WeatherBot.Handlers
                 Core.Constants.Commands.Contributing => contributingCommand.ExecuteAsync(message, cancellationToken),
                 Core.Constants.Commands.CommandList => commandListCommand.ExecuteAsync(message, cancellationToken),
                 Core.Constants.Commands.TicketNew => ticketNewCommand.ExecuteAsync(session, message, cancellationToken),
-                Core.Constants.Commands.TicketRemove => Task.CompletedTask,
+                Core.Constants.Commands.TicketRemove => ticketRemoveCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.TicketsActive => ticketsActiveCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.TicketsActivated => ticketsActivatedCommand.ExecuteAsync(session, message, cancellationToken),
                 _ => HandleWaitResponseCommand(session, message, cancellationToken)
@@ -86,6 +89,7 @@ namespace WeatherBot.Handlers
             {
                 Core.Constants.Commands.Setcity => setCityCommand.HandleResponse(session, message, cancellationToken),
                 Core.Constants.Commands.Ticket => ticketCommand.HandleResponse(session, message, cancellationToken),
+                Core.Constants.Commands.TicketRemove => ticketRemoveCommand.HandleCallbackQueryResponse(session, message, cancellationToken),
                 _ => commandListCommand.ExecuteAsync(message, cancellationToken)
             };
         }

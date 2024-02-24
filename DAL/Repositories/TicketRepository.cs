@@ -73,6 +73,15 @@ namespace DAL.Repositories
             return count < WeatherTariffValues.TotalVips;
         }
 
+        public async Task RemoveTicket(string value)
+        {
+            var ticket = await databaseContext.Tickets.FirstOrDefaultAsync(x => x.Value == value);
+            if (ticket == null)
+                return;
+            databaseContext.Tickets.Remove(ticket);
+            await databaseContext.SaveChangesAsync();
+        }
+
         public Task<Ticket[]> GetActiveTickets()
         {
             return AvailableTickets.OrderByDescending(x => x.WeatherTariff).ToArrayAsync();

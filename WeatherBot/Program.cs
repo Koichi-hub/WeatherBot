@@ -45,6 +45,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddScoped<IContributingCommand, ContributingCommand>();
 
         services.AddScoped<ITicketNewCommand, TicketNewCommand>();
+        services.AddScoped<ITicketRemoveCommand, TicketRemoveCommand>();
         services.AddScoped<ITicketsActiveCommand, TicketsActiveCommand>();
         services.AddScoped<ITicketsActivatedCommand, TicketsActivatedCommand>();
 

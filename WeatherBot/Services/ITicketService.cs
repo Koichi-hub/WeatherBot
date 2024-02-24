@@ -13,6 +13,8 @@ namespace WeatherBot.Services
 
         Task<bool> CanIssueTicket(WeatherTariff weatherTariff);
 
+        Task RemoveTicket(string value);
+
         Task<Ticket[]> GetActiveTickets();
 
         Task<Ticket[]> GetActivatedTickets();

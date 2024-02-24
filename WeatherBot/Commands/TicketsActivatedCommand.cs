@@ -33,7 +33,7 @@ namespace WeatherBot.Commands
             if (activatedTickets.Length > 0)
             {
                 sb.AppendLine("Активированные билеты");
-                sb.AppendLine("CreatedAt, UpdatedAt, userId, value, tariff");
+                sb.AppendLine("CreatedAt, UpdatedAt, UserId, Value, Tariff");
                 foreach (var activatedTicket in activatedTickets)
                     sb.AppendLine($"{activatedTicket.CreatedAt.ToString("d MMMM yyyy")}, {activatedTicket.UpdatedAt.ToString("d MMMM yyyy")}, `{activatedTicket.Session!.UserId}`, `{activatedTicket.Value}`, {activatedTicket.WeatherTariff}");
             }
