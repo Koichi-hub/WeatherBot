@@ -32,5 +32,15 @@ namespace WeatherBot.Services
         {
             return ticketRepository.CanIssueTicket(weatherTariff);
         }
+
+        public Task<Ticket[]> GetActiveTickets()
+        {
+            return ticketRepository.GetActiveTickets();
+        }
+
+        public Task<Ticket[]> GetActivatedTickets()
+        {
+            return ticketRepository.GetActivatedTickets();
+        }
     }
 }

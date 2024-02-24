@@ -72,5 +72,19 @@ namespace DAL.Repositories
             var count = await AvailableTickets.CountAsync(x => x.WeatherTariff == WeatherTariff.Vip);
             return count < WeatherTariffValues.TotalVips;
         }
+
+        public Task<Ticket[]> GetActiveTickets()
+        {
+            return AvailableTickets.OrderByDescending(x => x.WeatherTariff).ToArrayAsync();
+        }
+
+        public Task<Ticket[]> GetActivatedTickets()
+        {
+            return databaseContext.Tickets
+                .Include(x => x.Session)
+                .Where(x => x.IsActivated)
+                .OrderByDescending(x => x.WeatherTariff)
+                .ToArrayAsync();
+        }
     }
 }

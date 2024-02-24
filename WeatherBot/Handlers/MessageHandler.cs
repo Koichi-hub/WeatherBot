@@ -18,6 +18,8 @@ namespace WeatherBot.Handlers
         private readonly IBalanceCommand balanceCommand;
         private readonly IContributingCommand contributingCommand;
         private readonly ITicketNewCommand ticketNewCommand;
+        private readonly ITicketsActiveCommand ticketsActiveCommand;
+        private readonly ITicketsActivatedCommand ticketsActivatedCommand;
 
         public MessageHandler(
             ISessionService sessionService,
@@ -29,7 +31,9 @@ namespace WeatherBot.Handlers
             ITicketCommand ticketCommand,
             IBalanceCommand balanceCommand,
             IContributingCommand contributingCommand,
-            ITicketNewCommand ticketNewCommand
+            ITicketNewCommand ticketNewCommand,
+            ITicketsActiveCommand ticketsActiveCommand,
+            ITicketsActivatedCommand ticketsActivatedCommand
         )
         {
             this.sessionService = sessionService;
@@ -43,6 +47,8 @@ namespace WeatherBot.Handlers
             this.balanceCommand = balanceCommand;
             this.contributingCommand = contributingCommand;
             this.ticketNewCommand = ticketNewCommand;
+            this.ticketsActiveCommand = ticketsActiveCommand;
+            this.ticketsActivatedCommand = ticketsActivatedCommand;
         }
 
         public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
@@ -64,8 +70,8 @@ namespace WeatherBot.Handlers
                 Core.Constants.Commands.CommandList => commandListCommand.ExecuteAsync(message, cancellationToken),
                 Core.Constants.Commands.TicketNew => ticketNewCommand.ExecuteAsync(session, message, cancellationToken),
                 Core.Constants.Commands.TicketRemove => Task.CompletedTask,
-                Core.Constants.Commands.TicketsActive => Task.CompletedTask,
-                Core.Constants.Commands.TicketsActivated => Task.CompletedTask,
+                Core.Constants.Commands.TicketsActive => ticketsActiveCommand.ExecuteAsync(session, message, cancellationToken),
+                Core.Constants.Commands.TicketsActivated => ticketsActivatedCommand.ExecuteAsync(session, message, cancellationToken),
                 _ => HandleWaitResponseCommand(session, message, cancellationToken)
             };
             await task;

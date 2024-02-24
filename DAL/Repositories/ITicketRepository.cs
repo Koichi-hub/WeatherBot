@@ -12,5 +12,9 @@ namespace DAL.Repositories
         Task<Ticket> IssueTicket(WeatherTariff weatherTariff);
 
         Task<bool> CanIssueTicket(WeatherTariff weatherTariff);
+
+        Task<Ticket[]> GetActiveTickets();
+
+        Task<Ticket[]> GetActivatedTickets();
     }
 }
