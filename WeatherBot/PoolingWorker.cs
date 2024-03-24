@@ -6,17 +6,15 @@ namespace WeatherBot;
 
 public class PoolingWorker : BackgroundService
 {
-    private readonly ILogger<PoolingWorker> logger;
+    private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly ITelegramBotClient botClient;
     private readonly IServiceProvider serviceProvider;
 
     public PoolingWorker(
-        ILogger<PoolingWorker> logger, 
         ITelegramBotClient botClient,
         IServiceProvider serviceProvider
     )
     {
-        this.logger = logger;
         this.botClient = botClient;
         this.serviceProvider = serviceProvider;
     }
@@ -42,7 +40,7 @@ public class PoolingWorker : BackgroundService
                 };
 
                 var me = await botClient.GetMeAsync(cancellationToken);
-                logger.LogInformation("Start receiving updates for {BotName}", me.Username ?? "My comrade");
+                logger.Info("Start receiving updates for {BotName}", me.Username ?? "My comrade");
 
                 await botClient.ReceiveAsync(
                     updateHandler: updateHandler!,
@@ -52,7 +50,7 @@ public class PoolingWorker : BackgroundService
             }
             catch (Exception ex)
             {
-                logger.LogError("Polling failed with exception: {Exception}", ex);
+                logger.Error(ex, "Polling failed with exception: {Exception}");
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
             }
         }

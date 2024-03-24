@@ -3,28 +3,22 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using WeatherBot.Handlers;
-using WeatherBot.Services;
 
 namespace WeatherBot;
 
 public class UpdateHandler : IUpdateHandler
 {
-    private readonly ILogger<UpdateHandler> logger;
+    private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly IMessageHandler messageHandler;
     private readonly ICallbackQueryHandler callbackQueryHandler;
-    private readonly ISessionService sessionService;
 
     public UpdateHandler(
-        ILogger<UpdateHandler> logger,
         IMessageHandler messageHandler,
-        ICallbackQueryHandler callbackQueryHandler,
-        ISessionService sessionService
+        ICallbackQueryHandler callbackQueryHandler
     )
     {
-        this.logger = logger;
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;
-        this.sessionService = sessionService;
     }
 
     public async Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
@@ -47,7 +41,7 @@ public class UpdateHandler : IUpdateHandler
             _ => exception.ToString()
         };
 
-        logger.LogInformation("HandleError: {ErrorMessage}", ErrorMessage);
+        logger.Error("HandleError: {ErrorMessage}", ErrorMessage);
 
         if (exception is RequestException)
             await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
