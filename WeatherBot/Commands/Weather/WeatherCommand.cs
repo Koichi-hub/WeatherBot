@@ -4,7 +4,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Services;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.Weather
 {
     public class WeatherCommand : IWeatherCommand
     {
@@ -13,7 +13,7 @@ namespace WeatherBot.Commands
         private readonly ISessionService sessionService;
 
         public WeatherCommand(
-            ITelegramBotClient botClient, 
+            ITelegramBotClient botClient,
             IWeatherService weatherService,
             ISessionService sessionService
         )

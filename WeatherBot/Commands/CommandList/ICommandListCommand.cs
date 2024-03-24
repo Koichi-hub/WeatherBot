@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot.Types;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.CommandList
 {
     public interface ICommandListCommand
     {

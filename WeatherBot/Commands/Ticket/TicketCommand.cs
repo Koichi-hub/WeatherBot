@@ -4,7 +4,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Services;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.Ticket
 {
     public class TicketCommand : ITicketCommand
     {

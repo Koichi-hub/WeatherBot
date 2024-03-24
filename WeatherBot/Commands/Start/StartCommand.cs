@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.Start
 {
     public class StartCommand : IStartCommand
     {
@@ -15,7 +15,7 @@ namespace WeatherBot.Commands
         public async Task ExecuteAsync(Message message, CancellationToken cancellationToken)
         {
             await botClient.SendTextMessageAsync(
-                chatId: message.Chat.Id, 
+                chatId: message.Chat.Id,
                 text: "Доброго дня! 👋.\nНа связи WeatherBot!",
                 cancellationToken: cancellationToken
             );

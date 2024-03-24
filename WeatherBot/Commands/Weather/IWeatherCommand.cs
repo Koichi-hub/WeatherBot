@@ -1,7 +1,7 @@
 ﻿using Core.Entities;
 using Telegram.Bot.Types;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.Weather
 {
     public interface IWeatherCommand
     {

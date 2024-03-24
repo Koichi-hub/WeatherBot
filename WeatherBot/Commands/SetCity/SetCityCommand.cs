@@ -3,53 +3,43 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Services;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.SetCity
 {
-    public class TicketRemoveCommand : ITicketRemoveCommand
+    public class SetCityCommand : ISetCityCommand
     {
         private readonly ITelegramBotClient botClient;
-        private readonly ITicketService ticketService;
         private readonly ISessionService sessionService;
 
-        public TicketRemoveCommand(
+        public SetCityCommand(
             ITelegramBotClient botClient,
-            ITicketService ticketService,
             ISessionService sessionService
         )
         {
             this.botClient = botClient;
-            this.ticketService = ticketService;
             this.sessionService = sessionService;
         }
 
         public async Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken)
         {
-            if (!session.IsAdmin)
-                return;
-
-            session.WaitResponseCommand = Core.Constants.Commands.TicketRemove;
+            session.WaitResponseCommand = Core.Constants.Commands.Setcity;
             await sessionService.UpdateAsync(session);
 
             await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,
-                text: "Отправьте билет, который хотите удалить",
+                text: "Отправьте название города",
                 cancellationToken: cancellationToken
             );
         }
 
-        public async Task HandleCallbackQueryResponse(Session session, Message message, CancellationToken cancellationToken)
+        public async Task HandleResponse(Session session, Message message, CancellationToken cancellationToken)
         {
-            if (!session.IsAdmin)
-                return;
-
             session.WaitResponseCommand = string.Empty;
+            session.City = message.Text;
             await sessionService.UpdateAsync(session);
-
-            await ticketService.RemoveTicket(message.Text!);
 
             await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,
-                text: $"Билет {message.Text} был удален",
+                text: $"Название города установлено {session.City}, теперь вы можете выполнить команду {Core.Constants.Commands.Weather}",
                 cancellationToken: cancellationToken
             );
         }

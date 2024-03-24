@@ -2,7 +2,7 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.CommandList
 {
     public class CommandListCommand : ICommandListCommand
     {

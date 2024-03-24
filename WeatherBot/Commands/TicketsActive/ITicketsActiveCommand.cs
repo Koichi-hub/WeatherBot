@@ -1,9 +1,9 @@
 ﻿using Core.Entities;
 using Telegram.Bot.Types;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.TicketsActive
 {
-    public interface ITicketsActivatedCommand
+    public interface ITicketsActiveCommand
     {
         Task ExecuteAsync(Session session, Message message, CancellationToken cancellationToken);
     }

@@ -1,23 +1,19 @@
-﻿using Telegram.Bot;
-using Telegram.Bot.Types;
-using WeatherBot.Commands;
+﻿using Telegram.Bot.Types;
+using WeatherBot.Commands.TicketNew;
 using WeatherBot.Services;
 
 namespace WeatherBot.Handlers
 {
     public class CallbackQueryHandler : ICallbackQueryHandler
     {
-        private readonly ITelegramBotClient botClient;
         private readonly ISessionService sessionService;
         private readonly ITicketNewCommand ticketNewCommand;
 
         public CallbackQueryHandler(
-            ITelegramBotClient botClient,
             ISessionService sessionService,
             ITicketNewCommand ticketNewCommand
         )
         {
-            this.botClient = botClient;
             this.sessionService = sessionService;
             this.ticketNewCommand = ticketNewCommand;
         }

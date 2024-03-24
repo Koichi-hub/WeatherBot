@@ -1,6 +1,17 @@
 ﻿using Core.Entities;
 using Telegram.Bot.Types;
-using WeatherBot.Commands;
+using WeatherBot.Commands.Balance;
+using WeatherBot.Commands.CommandList;
+using WeatherBot.Commands.Contributing;
+using WeatherBot.Commands.SetCity;
+using WeatherBot.Commands.Start;
+using WeatherBot.Commands.Tariffs;
+using WeatherBot.Commands.Ticket;
+using WeatherBot.Commands.TicketNew;
+using WeatherBot.Commands.TicketRemove;
+using WeatherBot.Commands.TicketsActivated;
+using WeatherBot.Commands.TicketsActive;
+using WeatherBot.Commands.Weather;
 using WeatherBot.Services;
 
 namespace WeatherBot.Handlers
@@ -89,7 +100,7 @@ namespace WeatherBot.Handlers
             {
                 Core.Constants.Commands.Setcity => setCityCommand.HandleResponse(session, message, cancellationToken),
                 Core.Constants.Commands.Ticket => ticketCommand.HandleResponse(session, message, cancellationToken),
-                Core.Constants.Commands.TicketRemove => ticketRemoveCommand.HandleCallbackQueryResponse(session, message, cancellationToken),
+                Core.Constants.Commands.TicketRemove => ticketRemoveCommand.HandleResponse(session, message, cancellationToken),
                 _ => commandListCommand.ExecuteAsync(message, cancellationToken)
             };
         }

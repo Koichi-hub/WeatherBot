@@ -5,7 +5,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using WeatherBot.Services;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.TicketsActivated
 {
     public class TicketsActivatedCommand : ITicketsActivatedCommand
     {

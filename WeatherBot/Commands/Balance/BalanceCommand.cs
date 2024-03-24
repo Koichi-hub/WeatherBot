@@ -3,7 +3,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Services;
 
-namespace WeatherBot.Commands
+namespace WeatherBot.Commands.Balance
 {
     public class BalanceCommand : IBalanceCommand
     {
