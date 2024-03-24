@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace WeatherBot.Models
 {
@@ -25,13 +25,13 @@ namespace WeatherBot.Models
 
     public sealed class OpenWeatherResponseMain
     {
-        [JsonPropertyName("feels_like")]
+        [JsonProperty("feels_like")]
         public double FeelsLike { get; set; }
 
-        [JsonPropertyName("temp_min")]
+        [JsonProperty("temp_min")]
         public double Min { get; set; }
 
-        [JsonPropertyName("temp_max")]
+        [JsonProperty("temp_max")]
         public double Max { get; set; }
     }
 }

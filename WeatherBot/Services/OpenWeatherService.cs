@@ -2,7 +2,7 @@
 using Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using System.Net.Http.Json;
+using Newtonsoft.Json;
 using WeatherBot.Helpers;
 using WeatherBot.Models;
 
@@ -10,6 +10,7 @@ namespace WeatherBot.Services
 {
     public class OpenWeatherService : IWeatherService
     {
+        private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly HttpClient httpClient;
         private readonly OpenWeatherSettings openWeatherSettings;
 
@@ -20,7 +21,6 @@ namespace WeatherBot.Services
         {
             this.openWeatherSettings = openWeatherSettings.Value;
             this.httpClient = httpClient;
-            this.httpClient.BaseAddress = new Uri(this.openWeatherSettings.Uri);
         }
 
         public async Task<Weather> GetWeather(string city)
@@ -35,30 +35,52 @@ namespace WeatherBot.Services
             {
                 return await DoRequestToOpenWeather(city);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException("Erorr occurred while request to openweather", e);
+                logger.Error(ex, "GetWeather exception");
+                return new OpenWeatherResponse();
             }
         }
 
         private async Task<OpenWeatherResponse> DoRequestToOpenWeather(string city)
         {
             var queryParams = new List<KeyValuePair<string, StringValues>>
-                {
-                    new KeyValuePair<string, StringValues>("q", new string[] { city, "ru" }),
-                    new KeyValuePair<string, StringValues>("appid", openWeatherSettings.AppId),
-                    new KeyValuePair<string, StringValues>("lang", openWeatherSettings.Lang),
-                    new KeyValuePair<string, StringValues>("units", openWeatherSettings.Units),
-                };
+            {
+                new ("q", new string[] { city, "ru" }),
+                new ("appid", openWeatherSettings.AppId),
+                new ("lang", openWeatherSettings.Lang),
+                new ("units", openWeatherSettings.Units),
+            };
 
-            var endpoint = QueryHelper.AddQueryParams("weather", queryParams);
+            var endpoint = QueryHelper.AddQueryParams($"{openWeatherSettings.Uri}/weather", queryParams);
 
-            var openWeatherResponse = await httpClient.GetFromJsonAsync<OpenWeatherResponse>(endpoint);
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(endpoint),
+                Method = HttpMethod.Get
+            };
 
-            return openWeatherResponse ?? new OpenWeatherResponse();
+            var response = await httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                logger.Warn($"GetWeather response status = {0}", response.StatusCode);
+                return new OpenWeatherResponse();
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var openWeatherResponse = JsonConvert.DeserializeObject<OpenWeatherResponse>(content);
+
+            if (openWeatherResponse is null)
+            {
+                logger.Warn($"GetWeather openWeatherResponse is null");
+                return new OpenWeatherResponse();
+            }
+
+            return openWeatherResponse;
         }
 
-        private Weather MapToWeather(OpenWeatherResponse openWeatherResponse)
+        private static Weather MapToWeather(OpenWeatherResponse openWeatherResponse)
         {
             return new Weather
             {
